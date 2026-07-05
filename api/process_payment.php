@@ -143,7 +143,15 @@ if ($httpCode === 201 || ($responseData['status'] === 'success' && isset($respon
     $tranID = $responseData['data']['tranID'];
     
     try {
-        $network = get_network_from_phone($phone);
+        $network = 'Unknown';
+        $p = $phone;
+        if (strpos($p, '255') === 0) $p = '0' . substr($p, 3);
+        $prefix = substr($p, 0, 3);
+        if (in_array($prefix, ['074','075','076'])) $network = 'Vodacom';
+        elseif (in_array($prefix, ['065','067','071','077'])) $network = 'Tigo';
+        elseif (in_array($prefix, ['068','069','078','079'])) $network = 'Airtel';
+        elseif (in_array($prefix, ['062','061'])) $network = 'Halotel';
+        elseif (in_array($prefix, ['073'])) $network = 'TTCL';
         // Insert pending transaction
         $stmt = $pdo->prepare("
             INSERT INTO transactions (user_id, video_id, type, amount, reference_id, status, network) 
