@@ -1,0 +1,1262 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PesaLink ΓÇô API Documentation</title>
+    <meta name="description" content="PesaLink Developer API ΓÇô Complete reference for integrating payments using your API key." />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/logo/favicon_WhatsApp Image 2026-05-27 at 8.14.17 AM.jpeg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #f5f5f9;      
+            --surface:   #ffffff;      
+            --surface2:  #f8f9fa;      
+            --border:    #d9dee3;      
+            --accent:    #696cff;      
+            --accent2:   #a855f7;      
+            --green:     #71dd37;      
+            --red:       #ff3e1d;      
+            --yellow:    #ffab00;      
+            --blue:      #03c3ec;      
+            --text:      #566a7f;      
+            --muted:     #a1acb8;      
+            --code-bg:   #f4f5f7;      
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ΓöÇΓöÇΓöÇ LAYOUT ΓöÇΓöÇΓöÇ */
+        .layout { display: flex; min-height: 100vh; }
+
+        /* ΓöÇΓöÇΓöÇ SIDEBAR ΓöÇΓöÇΓöÇ */
+        .sidebar {
+            width: 270px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 0 0 2rem;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .sidebar-brand {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .sidebar-brand img { height: 32px; object-fit: contain; }
+        .sidebar-brand-name { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+        .sidebar-brand-tag {
+            font-size: 0.65rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-section { padding: 1.25rem 1.5rem 0.5rem; }
+        .sidebar-section-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(105,108,255,0.12);
+            color: var(--accent);
+        }
+        .sidebar-link .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+        .sidebar-link.active .dot, .sidebar-link:hover .dot { background: var(--accent); }
+
+        .method-pill {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: auto;
+            font-family: 'Fira Code', monospace;
+        }
+        .pill-get  { background: rgba(59,130,246,0.2); color: #60a5fa; }
+        .pill-post { background: rgba(34,197,94,0.2);  color: #4ade80; }
+
+        /* Status Codes */
+        .status-200, .status-201 { color: #16a34a; } /* Green */
+        .status-400, .status-401, .status-404, .status-429 { color: #d97706; } /* Orange */
+        .status-422, .status-500 { color: #dc2626; } /* Red */
+
+        /* ΓöÇΓöÇΓöÇ MAIN CONTENT ΓöÇΓöÇΓöÇ */
+        .main {
+            flex: 1;
+            overflow-x: hidden;
+            padding: 3rem 2.5rem;
+            max-width: 960px;
+        }
+
+        /* ΓöÇΓöÇΓöÇ HERO ΓöÇΓöÇΓöÇ */
+        .hero {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(105,108,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-version {
+            display: inline-block;
+            background: rgba(105,108,255,0.15);
+            color: var(--accent);
+            border: 1px solid rgba(105,108,255,0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .hero h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.2; }
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin-bottom: 1.5rem; }
+
+        .hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .hero-stat { display: flex; flex-direction: column; }
+        .hero-stat-value { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+        .hero-stat-label { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+
+        /* ΓöÇΓöÇΓöÇ SECTIONS ΓöÇΓöÇΓöÇ */
+        .section { margin-bottom: 3.5rem; }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .section-desc { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+
+        /* ΓöÇΓöÇΓöÇ INFO BOX ΓöÇΓöÇΓöÇ */
+        .info-box {
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+        }
+        .info-box.tip    { background: rgba(34,197,94,0.08);  border-color: var(--green); }
+        .info-box.warn   { background: rgba(245,158,11,0.08); border-color: var(--yellow); }
+        .info-box.info   { background: rgba(59,130,246,0.08); border-color: var(--blue); }
+        .info-box strong { display: block; margin-bottom: 0.25rem; }
+        .info-box.tip  strong { color: var(--green); }
+        .info-box.warn strong { color: var(--yellow); }
+        .info-box.info strong { color: var(--blue); }
+
+        /* ΓöÇΓöÇΓöÇ ENDPOINT CARD ΓöÇΓöÇΓöÇ */
+        .endpoint-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .endpoint-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--surface2);
+        }
+        .method-badge {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.35rem 0.9rem;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .badge-get  { background: rgba(59,130,246,0.2);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .badge-post { background: rgba(34,197,94,0.2);   color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+        .badge-del  { background: rgba(239,68,68,0.2);   color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
+        .endpoint-path {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+        .endpoint-summary {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .endpoint-body { padding: 1.5rem; }
+        .endpoint-desc { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.7; }
+
+        /* ΓöÇΓöÇΓöÇ PARAMS TABLE ΓöÇΓöÇΓöÇ */
+        .param-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-bottom: 1.5rem; }
+        .param-table th {
+            text-align: left;
+            padding: 0.6rem 0.75rem;
+            color: var(--muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+        }
+        .param-table td {
+            padding: 0.65rem 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            vertical-align: top;
+        }
+        .param-table tr:last-child td { border-bottom: none; }
+        .param-name { font-family: 'Fira Code', monospace; color: #a78bfa; font-size: 0.85rem; }
+        .param-type { font-family: 'Fira Code', monospace; color: var(--blue); font-size: 0.8rem; }
+        .req-badge { background: rgba(239,68,68,0.2); color: #f87171; font-size: 0.65rem; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+        .opt-badge { background: rgba(100,116,139,0.2); color: var(--muted); font-size: 0.65rem; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+        .param-desc { color: var(--muted); font-size: 0.85rem; }
+
+        /* ΓöÇΓöÇΓöÇ CODE BLOCKS ΓöÇΓöÇΓöÇ */
+        .code-tabs { margin-bottom: 1rem; }
+        .code-tab-list { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+        .code-tab-btn {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--muted);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: -1px;
+        }
+        .code-tab-btn:hover { color: var(--text); }
+        .code-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .code-panel { display: none; }
+        .code-panel.active { display: block; }
+
+        .code-block-wrap {
+            position: relative;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .code-block-wrap pre {
+            padding: 1.25rem 1.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: #abb2bf;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: rgba(105,108,255,0.15); color: var(--accent); border-color: var(--accent); }
+        .copy-btn.copied { color: var(--green); border-color: var(--green); background: rgba(34,197,94,0.1); }
+
+        /* Syntax colors */
+        .kw  { color: #d73a49; } /* Keyword - Reddish */
+        .str { color: #032f62; } /* String - Blueish */
+        .num { color: #005cc5; } /* Number - Blue */
+        .cmt { color: #6a737d; font-style: italic; } /* Comment - Gray */
+        .fn  { color: #6f42c1; } /* Function - Purple */
+        .var { color: #24292e; } /* Variable - Dark */
+        .op  { color: #d73a49; } /* Operator - Reddish */
+
+        /* ΓöÇΓöÇΓöÇ RESPONSE BADGES ΓöÇΓöÇΓöÇ */
+        .response-item { margin-bottom: 1.25rem; }
+        .response-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .status-200 { color: var(--green); }
+        .status-201 { color: #34d399; }
+        .status-401 { color: var(--yellow); }
+        .status-404 { color: #f97316; }
+        .status-422 { color: var(--red); }
+        .status-500 { color: #e879f9; }
+
+        /* ΓöÇΓöÇΓöÇ AUTH BOX ΓöÇΓöÇΓöÇ */
+        .auth-box {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        .auth-box .label { color: var(--muted); font-size: 0.75rem; font-family: 'Outfit', sans-serif; margin-bottom: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .auth-box .value { color: var(--accent); }
+
+        /* ΓöÇΓöÇΓöÇ ERRORS TABLE ΓöÇΓöÇΓöÇ */
+        .error-row td:first-child { font-family: 'Fira Code', monospace; font-weight: 700; }
+
+        /* ΓöÇΓöÇΓöÇ TOP NAV ΓöÇΓöÇΓöÇ */
+        .topbar {
+            display: none;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* ΓöÇΓöÇΓöÇ RESPONSIVE ΓöÇΓöÇΓöÇ */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .topbar { display: flex; }
+            .main { padding: 1.5rem; }
+            .hero h1 { font-size: 1.6rem; }
+            .hero-stats { gap: 1rem; }
+        }
+
+        /* ΓöÇΓöÇΓöÇ SCROLLBAR ΓöÇΓöÇΓöÇ */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        /* ΓöÇΓöÇΓöÇ QUICK START STEPS ΓöÇΓöÇΓöÇ */
+        .steps { counter-reset: step; }
+        .step {
+            display: flex;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+        .step-num {
+            flex-shrink: 0;
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem; color: #fff;
+            counter-increment: step;
+        }
+        .step-content h4 { font-weight: 700; margin-bottom: 0.25rem; font-size: 1rem; }
+        .step-content p { color: var(--muted); font-size: 0.88rem; }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(105,108,255,0.12);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.88em;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+        h5 { font-size: 0.85rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin: 1.25rem 0 0.5rem; }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Topbar -->
+<div class="topbar">
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+        <img src="/assets/img/logo/WhatsApp Image 2026-05-27 at 8.14.17 AM.jpeg" style="height:28px;object-fit:contain;" />
+        <strong style="font-size:1rem;">PesaLink API</strong>
+    </div>
+    <span class="sidebar-brand-tag">v1.0</span>
+</div>
+
+<div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <img src="/assets/img/logo/WhatsApp Image 2026-05-27 at 8.14.17 AM.jpeg" alt="PesaLink" />
+            <div>
+                <div class="sidebar-brand-name">PesaLink</div>
+                <span class="sidebar-brand-tag">API v1.0</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Getting Started</div>
+            <a href="#overview"      class="sidebar-link"><span class="dot"></span> Overview</a>
+            <a href="#authentication" class="sidebar-link"><span class="dot"></span> Authentication</a>
+            <a href="#quickstart"    class="sidebar-link"><span class="dot"></span> Quick Start</a>
+            <a href="#errors"        class="sidebar-link"><span class="dot"></span> Error Handling</a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Account</div>
+            <a href="#balance" class="sidebar-link">
+                <span class="dot"></span> Get Account Info
+                <span class="method-pill pill-get">GET</span>
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Transactions</div>
+            <a href="#create-transaction" class="sidebar-link">
+                <span class="dot"></span> Create Transaction
+                <span class="method-pill pill-post">POST</span>
+            </a>
+            <a href="#status-transaction" class="sidebar-link">
+                <span class="dot"></span> Check Status
+                <span class="method-pill pill-get">GET</span>
+            </a>
+            <a href="#list-transaction" class="sidebar-link">
+                <span class="dot"></span> List Transactions
+                <span class="method-pill pill-get">GET</span>
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Webhooks</div>
+            <a href="#webhooks" class="sidebar-link"><span class="dot"></span> Webhook Events</a>
+            <a href="#webhook-payload" class="sidebar-link"><span class="dot"></span> Payload Reference</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- HERO -->
+        <div class="hero" id="overview">
+            <div class="hero-version">API Reference v1.0</div>
+            <h1>PesaLink <span>Developer API</span></h1>
+            <p>
+                Integrate mobile money payments directly into your application using your personal API key.
+                RESTful JSON API ΓÇö works with any language, framework, or platform.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-value">REST</span>
+                    <span class="hero-stat-label">Architecture</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">JSON</span>
+                    <span class="hero-stat-label">Data Format</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">Bearer</span>
+                    <span class="hero-stat-label">Auth Scheme</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">TZS</span>
+                    <span class="hero-stat-label">Currency</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- AUTHENTICATION -->
+        <div class="section" id="authentication">
+            <div class="section-title">Authentication</div>
+            <p class="section-desc">
+                All API requests must include your personal API key in the <code>Authorization</code> header.
+                Get your API key from your <a href="api">API Management</a> dashboard after logging in.
+            </p>
+
+            <div class="auth-box">
+                <div class="label">Base URL</div>
+                <div class="value">https://pesalink.online/api/</div>
+            </div>
+
+            <div class="auth-box">
+                <div class="label">Authorization Header</div>
+                <div class="value">Authorization: Bearer <span style="color:#64748b;">{YOUR_API_KEY}</span></div>
+            </div>
+
+            <div class="info-box tip">
+                <strong>≡ƒöæ Where to get your API key</strong>
+                Log in to your account and go to <strong>API Management</strong> ΓåÆ click <strong>Generate New API Key</strong>.
+                Your key starts with the site name prefix (e.g., <code>Pesalink_xxxxxxxx...</code>).
+            </div>
+
+            <div class="info-box warn">
+                <strong>ΓÜá∩╕Å Keep your key secret</strong>
+                Never expose your API key in client-side JavaScript or public repositories.
+                If compromised, regenerate it immediately from your dashboard.
+            </div>
+        </div>
+
+        <!-- QUICK START -->
+        <div class="section" id="quickstart">
+            <div class="section-title">Quick Start</div>
+            <p class="section-desc">Get up and running with your first payment in under 5 minutes.</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4>Get your API Key</h4>
+                        <p>Log in ΓåÆ navigate to <strong>API Management</strong> ΓåÆ click <strong>Generate New API Key</strong>. Copy the key securely.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4>Create a Transaction</h4>
+                        <p>Call <code>POST /api/create-transaction</code> with the recipient's phone number, amount, and their name. You'll receive a <code>tranID</code> instantly.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4>Track Payment Status</h4>
+                        <p>Use the <code>tranID</code> to call <code>GET /api/status-transaction?tranid=...</code> to check if payment is <code>PENDING</code>, <code>COMPLETED</code>, or <code>CANCELLED</code>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h4>(Optional) Set up a Webhook</h4>
+                        <p>Register a webhook URL in your dashboard to receive real-time payment status updates automatically ΓÇö no polling needed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Complete Example</h3>
+            <div class="code-tabs">
+                <div class="code-tab-list">
+                    <button class="code-tab-btn active" onclick="switchTab(this,'qs','curl')">cURL</button>
+                    <button class="code-tab-btn" onclick="switchTab(this,'qs','php')">PHP</button>
+                    <button class="code-tab-btn" onclick="switchTab(this,'qs','js')">JavaScript</button>
+                </div>
+                <div id="qs-curl" class="code-panel active">
+                    <div class="code-block-wrap">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><span class="cmt"># Step 1: Create transaction</span>
+<span class="fn">curl</span> <span class="op">-X</span> POST <span class="str">"https://pesalink.online/api/create-transaction"</span> \
+  <span class="op">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY"</span> \
+  <span class="op">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="op">-d</span> <span class="str">'{"number":"0695123456","amount":5000,"name":"John Doe"}'</span>
+
+<span class="cmt"># Step 2: Check status (replace tranid value)</span>
+<span class="fn">curl</span> <span class="str">"https://pesalink.online/api/status-transaction?tranid=pay_aB3xYz9k"</span> \
+  <span class="op">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY"</span></pre>
+                    </div>
+                </div>
+                <div id="qs-php" class="code-panel">
+                    <div class="code-block-wrap">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><span class="cmt">// Step 1: Create transaction</span>
+<span class="var">$apiKey</span> <span class="op">=</span> <span class="str">'YOUR_API_KEY'</span>;
+<span class="var">$ch</span> <span class="op">=</span> <span class="fn">curl_init</span>(<span class="str">'https://pesalink.online/api/create-transaction'</span>);
+<span class="fn">curl_setopt_array</span>(<span class="var">$ch</span>, [
+    CURLOPT_RETURNTRANSFER <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_POST           <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_HTTPHEADER     <span class="op">=></span> [
+        <span class="str">'Authorization: Bearer '</span> <span class="op">.</span> <span class="var">$apiKey</span>,
+        <span class="str">'Content-Type: application/json'</span>,
+    ],
+    CURLOPT_POSTFIELDS <span class="op">=></span> <span class="fn">json_encode</span>([
+        <span class="str">'number'</span> <span class="op">=></span> <span class="str">'0695123456'</span>,
+        <span class="str">'amount'</span> <span class="op">=></span> <span class="num">5000</span>,
+        <span class="str">'name'</span>   <span class="op">=></span> <span class="str">'John Doe'</span>,
+    ]),
+]);
+<span class="var">$response</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">curl_exec</span>(<span class="var">$ch</span>), <span class="kw">true</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+
+<span class="var">$tranID</span> <span class="op">=</span> <span class="var">$response</span>[<span class="str">'data'</span>][<span class="str">'tranID'</span>];
+
+<span class="cmt">// Step 2: Check status</span>
+<span class="var">$ch2</span> <span class="op">=</span> <span class="fn">curl_init</span>(<span class="str">'https://pesalink.online/api/status-transaction?tranid='</span> <span class="op">.</span> <span class="var">$tranID</span>);
+<span class="fn">curl_setopt_array</span>(<span class="var">$ch2</span>, [
+    CURLOPT_RETURNTRANSFER <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_HTTPHEADER     <span class="op">=></span> [<span class="str">'Authorization: Bearer '</span> <span class="op">.</span> <span class="var">$apiKey</span>],
+]);
+<span class="var">$status</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">curl_exec</span>(<span class="var">$ch2</span>), <span class="kw">true</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch2</span>);
+
+<span class="fn">echo</span> <span class="var">$status</span>[<span class="str">'data'</span>][<span class="str">'payment_status'</span>]; <span class="cmt">// PENDING / COMPLETED / CANCELLED</span></pre>
+                    </div>
+                </div>
+                <div id="qs-js" class="code-panel">
+                    <div class="code-block-wrap">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><span class="kw">const</span> <span class="var">API_KEY</span> <span class="op">=</span> <span class="str">'YOUR_API_KEY'</span>;
+<span class="kw">const</span> <span class="var">BASE</span>    <span class="op">=</span> <span class="str">'https://pesalink.online/api'</span>;
+
+<span class="cmt">// Step 1: Create transaction</span>
+<span class="kw">const</span> <span class="var">res</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${BASE}/create-transaction`</span>, {
+  <span class="var">method</span>:  <span class="str">'POST'</span>,
+  <span class="var">headers</span>: { <span class="str">'Authorization'</span>: <span class="str">`Bearer ${API_KEY}`</span>, <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> },
+  <span class="var">body</span>:    <span class="fn">JSON.stringify</span>({ <span class="var">number</span>: <span class="str">'0695123456'</span>, <span class="var">amount</span>: <span class="num">5000</span>, <span class="var">name</span>: <span class="str">'John Doe'</span> }),
+});
+<span class="kw">const</span> { <span class="var">data</span> } <span class="op">=</span> <span class="kw">await</span> <span class="var">res</span>.<span class="fn">json</span>();
+<span class="kw">const</span> <span class="var">tranID</span> <span class="op">=</span> <span class="var">data</span>.<span class="var">tranID</span>;
+
+<span class="cmt">// Step 2: Poll for status</span>
+<span class="kw">const</span> <span class="var">poll</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${BASE}/status-transaction?tranid=${tranID}`</span>, {
+  <span class="var">headers</span>: { <span class="str">'Authorization'</span>: <span class="str">`Bearer ${API_KEY}`</span> },
+});
+<span class="kw">const</span> <span class="var">status</span> <span class="op">=</span> <span class="kw">await</span> <span class="var">poll</span>.<span class="fn">json</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">status</span>.<span class="var">data</span>.<span class="var">payment_status</span>); <span class="cmt">// PENDING / COMPLETED / CANCELLED</span></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΓòÉΓòÉΓòÉ ENDPOINT: GET BALANCE ΓòÉΓòÉΓòÉ -->
+        <div class="section" id="balance">
+            <div class="section-title">Account</div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge badge-get">GET</span>
+                    <span class="endpoint-path">/api/balance</span>
+                    <span class="endpoint-summary">Get Account Info</span>
+                </div>
+                <div class="endpoint-body">
+                    <p class="endpoint-desc">
+                        Retrieve the authenticated user's account information ΓÇö username, email, and current balance in TZS.
+                        Use this to verify your API key is working and to display account stats.
+                    </p>
+
+                    <h5>Request</h5>
+                    <div class="code-tabs">
+                        <div class="code-tab-list">
+                            <button class="code-tab-btn active" onclick="switchTab(this,'bal','curl')">cURL</button>
+                            <button class="code-tab-btn" onclick="switchTab(this,'bal','php')">PHP</button>
+                            <button class="code-tab-btn" onclick="switchTab(this,'bal','js')">JavaScript</button>
+                        </div>
+                        <div id="bal-curl" class="code-panel active">
+                            <div class="code-block-wrap">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><span class="fn">curl</span> <span class="str">"https://pesalink.online/api/balance"</span> \
+  <span class="op">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY"</span></pre>
+                            </div>
+                        </div>
+                        <div id="bal-php" class="code-panel">
+                            <div class="code-block-wrap">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><span class="var">$ch</span> <span class="op">=</span> <span class="fn">curl_init</span>(<span class="str">'https://pesalink.online/api/balance'</span>);
+<span class="fn">curl_setopt_array</span>(<span class="var">$ch</span>, [
+    CURLOPT_RETURNTRANSFER <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_HTTPHEADER     <span class="op">=></span> [<span class="str">'Authorization: Bearer YOUR_API_KEY'</span>],
+]);
+<span class="var">$data</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">curl_exec</span>(<span class="var">$ch</span>), <span class="kw">true</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);</pre>
+                            </div>
+                        </div>
+                        <div id="bal-js" class="code-panel">
+                            <div class="code-block-wrap">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><span class="kw">const</span> <span class="var">res</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://pesalink.online/api/balance'</span>, {
+  <span class="var">headers</span>: { <span class="str">'Authorization'</span>: <span class="str">'Bearer YOUR_API_KEY'</span> }
+});
+<span class="kw">const</span> <span class="var">data</span> <span class="op">=</span> <span class="kw">await</span> <span class="var">res</span>.<span class="fn">json</span>();</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Response 200</h5>
+                    <div class="code-block-wrap">
+                        <pre>{
+  <span class="var">"status"</span>:  <span class="str">"success"</span>,
+  <span class="var">"message"</span>: <span class="str">"Account info retrieved"</span>,
+  <span class="var">"data"</span>: {
+    <span class="var">"name"</span>:    <span class="str">"johndoe"</span>,
+    <span class="var">"email"</span>:   <span class="str">"john@example.com"</span>,
+    <span class="var">"balance"</span>: <span class="str">"50000 TZS"</span>
+  }
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΓòÉΓòÉΓòÉ ENDPOINT: CREATE TRANSACTION ΓòÉΓòÉΓòÉ -->
+        <div class="section" id="create-transaction">
+            <div class="section-title">Transactions</div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge badge-post">POST</span>
+                    <span class="endpoint-path">/api/create-transaction</span>
+                    <span class="endpoint-summary">Create Transaction</span>
+                </div>
+                <div class="endpoint-body">
+                    <p class="endpoint-desc">
+                        Initiate a mobile money payment to a recipient. The API responds immediately with <code>PENDING</code> status
+                        and a <code>tranID</code>. The actual payment processes asynchronously ΓÇö use the returned <code>tranID</code>
+                        to poll for the final status or listen on your webhook.
+                        <br><br>
+                        Phone numbers are automatically normalised from local format (<code>0XXXXXXXXX</code>) to international
+                        format (<code>255XXXXXXXXX</code>). The mobile network operator is auto-detected.
+                    </p>
+
+                    <h5>Request Body ΓÇö application/json</h5>
+                    <table class="param-table">
+                        <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="param-name">number</span></td>
+                                <td><span class="param-type">string</span></td>
+                                <td><span class="req-badge">Required</span></td>
+                                <td class="param-desc">Recipient phone number. Accepts <code>0XXXXXXXXX</code> or <code>255XXXXXXXXX</code>. Min 10 digits.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="param-name">amount</span></td>
+                                <td><span class="param-type">number</span></td>
+                                <td><span class="req-badge">Required</span></td>
+                                <td class="param-desc">Amount in TZS. Must be a positive integer.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="param-name">name</span></td>
+                                <td><span class="param-type">string</span></td>
+                                <td><span class="req-badge">Required</span></td>
+                                <td class="param-desc">Recipient's full name. Used for transaction records.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h5>Request Examples</h5>
+                    <div class="code-tabs">
+                        <div class="code-tab-list">
+                            <button class="code-tab-btn active" onclick="switchTab(this,'ct','curl')">cURL</button>
+                            <button class="code-tab-btn" onclick="switchTab(this,'ct','php')">PHP</button>
+                            <button class="code-tab-btn" onclick="switchTab(this,'ct','js')">JavaScript</button>
+                        </div>
+                        <div id="ct-curl" class="code-panel active">
+                            <div class="code-block-wrap">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><span class="fn">curl</span> <span class="op">-X</span> POST <span class="str">"https://pesalink.online/api/create-transaction"</span> \
+  <span class="op">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY"</span> \
+  <span class="op">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="op">-d</span> <span class="str">'{
+    "number": "0695123456",
+    "amount": 5000,
+    "name":   "John Doe"
+  }'</span></pre>
+                            </div>
+                        </div>
+                        <div id="ct-php" class="code-panel">
+                            <div class="code-block-wrap">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><span class="var">$ch</span> <span class="op">=</span> <span class="fn">curl_init</span>(<span class="str">'https://pesalink.online/api/create-transaction'</span>);
+<span class="fn">curl_setopt_array</span>(<span class="var">$ch</span>, [
+    CURLOPT_RETURNTRANSFER <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_POST           <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_HTTPHEADER     <span class="op">=></span> [
+        <span class="str">'Authorization: Bearer YOUR_API_KEY'</span>,
+        <span class="str">'Content-Type: application/json'</span>,
+    ],
+    CURLOPT_POSTFIELDS <span class="op">=></span> <span class="fn">json_encode</span>([
+        <span class="str">'number'</span> <span class="op">=></span> <span class="str">'0695123456'</span>,
+        <span class="str">'amount'</span> <span class="op">=></span> <span class="num">5000</span>,
+        <span class="str">'name'</span>   <span class="op">=></span> <span class="str">'John Doe'</span>,
+    ]),
+]);
+<span class="var">$response</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">curl_exec</span>(<span class="var">$ch</span>), <span class="kw">true</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);
+
+<span class="cmt">// Save tranID for status polling</span>
+<span class="var">$tranID</span> <span class="op">=</span> <span class="var">$response</span>[<span class="str">'data'</span>][<span class="str">'tranID'</span>];</pre>
+                            </div>
+                        </div>
+                        <div id="ct-js" class="code-panel">
+                            <div class="code-block-wrap">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <pre><span class="kw">const</span> <span class="var">response</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://pesalink.online/api/create-transaction'</span>, {
+  <span class="var">method</span>:  <span class="str">'POST'</span>,
+  <span class="var">headers</span>: {
+    <span class="str">'Authorization'</span>: <span class="str">'Bearer YOUR_API_KEY'</span>,
+    <span class="str">'Content-Type'</span>:  <span class="str">'application/json'</span>,
+  },
+  <span class="var">body</span>: <span class="fn">JSON.stringify</span>({
+    <span class="var">number</span>: <span class="str">'0695123456'</span>,
+    <span class="var">amount</span>: <span class="num">5000</span>,
+    <span class="var">name</span>:   <span class="str">'John Doe'</span>,
+  }),
+});
+<span class="kw">const</span> { <span class="var">data</span> } <span class="op">=</span> <span class="kw">await</span> <span class="var">response</span>.<span class="fn">json</span>();
+<span class="kw">const</span> <span class="var">tranID</span> <span class="op">=</span> <span class="var">data</span>.<span class="var">tranID</span>; <span class="cmt">// save for later</span></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Response 201 ΓÇö Created</h5>
+                    <div class="code-block-wrap">
+                        <pre>{
+  <span class="var">"status"</span>:  <span class="str">"success"</span>,
+  <span class="var">"message"</span>: <span class="str">"Payment created"</span>,
+  <span class="var">"data"</span>: {
+    <span class="var">"tranID"</span>:  <span class="str">"pay_aB3xYz9k"</span>,   <span class="cmt">// save this!</span>
+    <span class="var">"amount"</span>:  <span class="num">5000</span>,
+    <span class="var">"number"</span>:  <span class="str">"255695123456"</span>,
+    <span class="var">"network"</span>: <span class="str">"AIRTEL"</span>,
+    <span class="var">"status"</span>:  <span class="str">"PENDING"</span>,
+    <span class="var">"time"</span>:    <span class="str">"2025-09-01T10:30:00.000000Z"</span>
+  }
+}</pre>
+                    </div>
+
+                    <h5>Response 422 ΓÇö Validation Error</h5>
+                    <div class="code-block-wrap">
+                        <pre>{
+  <span class="var">"status"</span>:  <span class="str">"error"</span>,
+  <span class="var">"message"</span>: <span class="str">"Missing required"</span>,
+  <span class="var">"errors"</span>: {
+    <span class="var">"number"</span>: [<span class="str">"Phone number is required."</span>],
+    <span class="var">"amount"</span>: [<span class="str">"Amount is required."</span>],
+    <span class="var">"name"</span>:   [<span class="str">"Customer name is required."</span>]
+  }
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΓòÉΓòÉΓòÉ ENDPOINT: STATUS TRANSACTION ΓòÉΓòÉΓòÉ -->
+        <div class="endpoint-card" id="status-transaction" style="margin-bottom:2rem;">
+            <div class="endpoint-header">
+                <span class="method-badge badge-get">GET</span>
+                <span class="endpoint-path">/api/status-transaction</span>
+                <span class="endpoint-summary">Check Transaction Status</span>
+            </div>
+            <div class="endpoint-body">
+                <p class="endpoint-desc">
+                    Check the current status of a transaction using its <code>tranID</code>. The <code>tranID</code> is returned when
+                    you create a transaction (format: <code>pay_xxxxxxxx</code>). You can only query transactions that belong to your account.
+                </p>
+
+                <h5>Query Parameters</h5>
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">tranid</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="req-badge">Required</span></td>
+                            <td class="param-desc">The unique transaction ID returned from create-transaction. Example: <code>pay_aB3xYz9k</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Request Examples</h5>
+                <div class="code-tabs">
+                    <div class="code-tab-list">
+                        <button class="code-tab-btn active" onclick="switchTab(this,'st','curl')">cURL</button>
+                        <button class="code-tab-btn" onclick="switchTab(this,'st','php')">PHP</button>
+                        <button class="code-tab-btn" onclick="switchTab(this,'st','js')">JavaScript</button>
+                    </div>
+                    <div id="st-curl" class="code-panel active">
+                        <div class="code-block-wrap">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><span class="fn">curl</span> <span class="str">"https://pesalink.online/api/status-transaction?tranid=pay_aB3xYz9k"</span> \
+  <span class="op">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY"</span></pre>
+                        </div>
+                    </div>
+                    <div id="st-php" class="code-panel">
+                        <div class="code-block-wrap">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><span class="var">$tranID</span> <span class="op">=</span> <span class="str">'pay_aB3xYz9k'</span>;
+<span class="var">$ch</span> <span class="op">=</span> <span class="fn">curl_init</span>(<span class="str">'https://pesalink.online/api/status-transaction?tranid='</span> <span class="op">.</span> <span class="fn">urlencode</span>(<span class="var">$tranID</span>));
+<span class="fn">curl_setopt_array</span>(<span class="var">$ch</span>, [
+    CURLOPT_RETURNTRANSFER <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_HTTPHEADER     <span class="op">=></span> [<span class="str">'Authorization: Bearer YOUR_API_KEY'</span>],
+]);
+<span class="var">$response</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">curl_exec</span>(<span class="var">$ch</span>), <span class="kw">true</span>);
+<span class="fn">curl_close</span>(<span class="var">$ch</span>);</pre>
+                        </div>
+                    </div>
+                    <div id="st-js" class="code-panel">
+                        <div class="code-block-wrap">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><span class="kw">const</span> <span class="var">res</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(
+  <span class="str">`https://pesalink.online/api/status-transaction?tranid=pay_aB3xYz9k`</span>,
+  { <span class="var">headers</span>: { <span class="str">'Authorization'</span>: <span class="str">'Bearer YOUR_API_KEY'</span> } }
+);
+<span class="kw">const</span> { <span class="var">data</span> } <span class="op">=</span> <span class="kw">await</span> <span class="var">res</span>.<span class="fn">json</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var">data</span>.<span class="var">payment_status</span>); <span class="cmt">// PENDING | COMPLETED | CANCELLED</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Response 200</h5>
+                <div class="code-block-wrap">
+                    <pre>{
+  <span class="var">"status"</span>:  <span class="str">"success"</span>,
+  <span class="var">"message"</span>: <span class="str">"Payment status retrieved"</span>,
+  <span class="var">"data"</span>: {
+    <span class="var">"tranid"</span>:         <span class="str">"pay_aB3xYz9k"</span>,
+    <span class="var">"payment_status"</span>: <span class="str">"COMPLETED"</span>,  <span class="cmt">// PENDING | COMPLETED | CANCELLED</span>
+    <span class="var">"amount"</span>:         <span class="num">5000</span>,
+    <span class="var">"network"</span>:        <span class="str">"AIRTEL"</span>,
+    <span class="var">"time"</span>:           <span class="str">"2025-09-01T10:30:00.000000Z"</span>
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΓòÉΓòÉΓòÉ ENDPOINT: LIST TRANSACTIONS ΓòÉΓòÉΓòÉ -->
+        <div class="endpoint-card" id="list-transaction" style="margin-bottom:3rem;">
+            <div class="endpoint-header">
+                <span class="method-badge badge-get">GET</span>
+                <span class="endpoint-path">/api/list-transaction</span>
+                <span class="endpoint-summary">List Transactions</span>
+            </div>
+            <div class="endpoint-body">
+                <p class="endpoint-desc">
+                    Retrieve all transactions within a specified date range for the authenticated account.
+                    Results are scoped to your account only. Useful for reconciliation and reporting.
+                </p>
+
+                <h5>Query Parameters</h5>
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">date_from</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="req-badge">Required</span></td>
+                            <td class="param-desc">Start date in <code>YYYY-MM-DD</code> format (inclusive). Example: <code>2025-09-01</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">date_to</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="req-badge">Required</span></td>
+                            <td class="param-desc">End date in <code>YYYY-MM-DD</code> format (inclusive). Example: <code>2025-09-30</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Request Examples</h5>
+                <div class="code-tabs">
+                    <div class="code-tab-list">
+                        <button class="code-tab-btn active" onclick="switchTab(this,'lt','curl')">cURL</button>
+                        <button class="code-tab-btn" onclick="switchTab(this,'lt','php')">PHP</button>
+                        <button class="code-tab-btn" onclick="switchTab(this,'lt','js')">JavaScript</button>
+                    </div>
+                    <div id="lt-curl" class="code-panel active">
+                        <div class="code-block-wrap">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><span class="fn">curl</span> <span class="str">"https://pesalink.online/api/list-transaction?date_from=2025-09-01&date_to=2025-09-30"</span> \
+  <span class="op">-H</span> <span class="str">"Authorization: Bearer YOUR_API_KEY"</span></pre>
+                        </div>
+                    </div>
+                    <div id="lt-php" class="code-panel">
+                        <div class="code-block-wrap">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><span class="var">$ch</span> <span class="op">=</span> <span class="fn">curl_init</span>(<span class="str">'https://pesalink.online/api/list-transaction?date_from=2025-09-01&date_to=2025-09-30'</span>);
+<span class="fn">curl_setopt_array</span>(<span class="var">$ch</span>, [
+    CURLOPT_RETURNTRANSFER <span class="op">=></span> <span class="kw">true</span>,
+    CURLOPT_HTTPHEADER     <span class="op">=></span> [<span class="str">'Authorization: Bearer YOUR_API_KEY'</span>],
+]);
+<span class="var">$response</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">curl_exec</span>(<span class="var">$ch</span>), <span class="kw">true</span>);</pre>
+                        </div>
+                    </div>
+                    <div id="lt-js" class="code-panel">
+                        <div class="code-block-wrap">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre><span class="kw">const</span> <span class="var">params</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">URLSearchParams</span>({ <span class="var">date_from</span>: <span class="str">'2025-09-01'</span>, <span class="var">date_to</span>: <span class="str">'2025-09-30'</span> });
+<span class="kw">const</span> <span class="var">res</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`https://pesalink.online/api/list-transaction?${params}`</span>, {
+  <span class="var">headers</span>: { <span class="str">'Authorization'</span>: <span class="str">'Bearer YOUR_API_KEY'</span> }
+});
+<span class="kw">const</span> { <span class="var">data</span> } <span class="op">=</span> <span class="kw">await</span> <span class="var">res</span>.<span class="fn">json</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`${data.count} transactions`</span>, <span class="var">data</span>.<span class="var">transactions</span>);</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Response 200</h5>
+                <div class="code-block-wrap">
+                    <pre>{
+  <span class="var">"status"</span>:  <span class="str">"success"</span>,
+  <span class="var">"message"</span>: <span class="str">"Transaction list retrieved"</span>,
+  <span class="var">"data"</span>: {
+    <span class="var">"count"</span>: <span class="num">2</span>,
+    <span class="var">"transactions"</span>: [
+      {
+        <span class="var">"tranID"</span>:  <span class="str">"pay_aB3xYz9k"</span>,
+        <span class="var">"number"</span>:  <span class="str">"255695123456"</span>,
+        <span class="var">"amount"</span>:  <span class="num">5000</span>,
+        <span class="var">"network"</span>: <span class="str">"AIRTEL"</span>,
+        <span class="var">"status"</span>:  <span class="str">"COMPLETED"</span>,
+        <span class="var">"created"</span>: <span class="str">"2025-09-01 10:30:00"</span>
+      },
+      {
+        <span class="var">"tranID"</span>:  <span class="str">"pay_mN7pQr2w"</span>,
+        <span class="var">"number"</span>:  <span class="str">"255712345678"</span>,
+        <span class="var">"amount"</span>:  <span class="num">10000</span>,
+        <span class="var">"network"</span>: <span class="str">"VODACOM"</span>,
+        <span class="var">"status"</span>:  <span class="str">"PENDING"</span>,
+        <span class="var">"created"</span>: <span class="str">"2025-09-02 14:00:00"</span>
+      }
+    ]
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΓòÉΓòÉΓòÉ WEBHOOKS ΓòÉΓòÉΓòÉ -->
+        <div class="section" id="webhooks">
+            <div class="section-title">Webhooks</div>
+            <p class="section-desc">
+                Webhooks let you receive real-time payment status notifications without polling.
+                When a payment is completed or fails, we send an HTTP <code>POST</code> request to your registered URL.
+            </p>
+
+            <div class="info-box info">
+                <strong>Γä╣∩╕Å How to register a webhook</strong>
+                Go to <strong>API Management</strong> in your dashboard ΓåÆ enter your public HTTPS URL under <strong>Webhook URL</strong> ΓåÆ save.
+                Your endpoint must return HTTP <code>200</code> within 10 seconds or delivery will be retried.
+            </div>
+
+            <div id="webhook-payload">
+                <h5>Webhook Payload ΓÇö POST application/json</h5>
+                <table class="param-table" style="margin-bottom:1.5rem;">
+                    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">order_id</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td class="param-desc">The <code>tranID</code> of the transaction (e.g. <code>pay_aB3xYz9k</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">payment_status</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td class="param-desc"><code>COMPLETED</code>, <code>FAILED</code>, or <code>CANCELLED</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">status</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td class="param-desc">Alias for <code>payment_status</code> ΓÇö same value</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example Webhook Payload</h5>
+                <div class="code-block-wrap" style="margin-bottom:1.5rem;">
+                    <pre>{
+  <span class="var">"order_id"</span>:       <span class="str">"pay_aB3xYz9k"</span>,
+  <span class="var">"payment_status"</span>: <span class="str">"COMPLETED"</span>
+}</pre>
+                </div>
+
+                <h5>Webhook Handler ΓÇö PHP Example</h5>
+                <div class="code-block-wrap">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><span class="cmt">// your-webhook-endpoint.php</span>
+<span class="var">$payload</span> <span class="op">=</span> <span class="fn">json_decode</span>(<span class="fn">file_get_contents</span>(<span class="str">'php://input'</span>), <span class="kw">true</span>);
+
+<span class="var">$orderId</span> <span class="op">=</span> <span class="var">$payload</span>[<span class="str">'order_id'</span>]       <span class="op">??</span> <span class="str">''</span>;
+<span class="var">$status</span>  <span class="op">=</span> <span class="var">$payload</span>[<span class="str">'payment_status'</span>] <span class="op">??</span> <span class="var">$payload</span>[<span class="str">'status'</span>] <span class="op">??</span> <span class="str">''</span>;
+
+<span class="kw">if</span> (empty(<span class="var">$orderId</span>) <span class="op">||</span> empty(<span class="var">$status</span>)) {
+    <span class="fn">http_response_code</span>(<span class="num">400</span>);
+    <span class="fn">exit</span>(<span class="str">'Missing fields'</span>);
+}
+
+<span class="kw">if</span> (<span class="var">$status</span> <span class="op">===</span> <span class="str">'COMPLETED'</span>) {
+    <span class="cmt">// Credit the user's account or fulfill the order</span>
+    <span class="fn">markOrderPaid</span>(<span class="var">$orderId</span>);
+} <span class="kw">elseif</span> (<span class="var">$status</span> <span class="op">===</span> <span class="str">'FAILED'</span> <span class="op">||</span> <span class="var">$status</span> <span class="op">===</span> <span class="str">'CANCELLED'</span>) {
+    <span class="cmt">// Handle failure</span>
+    <span class="fn">markOrderFailed</span>(<span class="var">$orderId</span>);
+}
+
+<span class="fn">http_response_code</span>(<span class="num">200</span>); <span class="cmt">// must return 200 or delivery retries</span>
+<span class="fn">echo</span> <span class="fn">json_encode</span>([<span class="str">'received'</span> <span class="op">=></span> <span class="kw">true</span>]);</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ΓòÉΓòÉΓòÉ ERROR HANDLING ΓòÉΓòÉΓòÉ -->
+        <div class="section" id="errors">
+            <div class="section-title">Error Handling</div>
+            <p class="section-desc">
+                All errors return a JSON body with <code>status: "error"</code> and a descriptive <code>message</code>.
+                Use HTTP status codes to branch your error logic.
+            </p>
+
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>HTTP Code</th>
+                        <th>Meaning</th>
+                        <th>Common Cause</th>
+                    </tr>
+                </thead>
+                <tbody class="error-row">
+                    <tr>
+                        <td><span class="status-200" style="font-family:'Fira Code',monospace;font-weight:700;">200</span></td>
+                        <td>OK</td>
+                        <td>Request succeeded (GET endpoints)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-201" style="font-family:'Fira Code',monospace;font-weight:700;">201</span></td>
+                        <td>Created</td>
+                        <td>Transaction was successfully created</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-401" style="font-family:'Fira Code',monospace;font-weight:700;">401</span></td>
+                        <td>Unauthorized</td>
+                        <td>Missing, invalid, or expired API key</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-404" style="font-family:'Fira Code',monospace;font-weight:700;">404</span></td>
+                        <td>Not Found</td>
+                        <td><code>tranid</code> does not exist or doesn't belong to your account</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-422" style="font-family:'Fira Code',monospace;font-weight:700;">422</span></td>
+                        <td>Unprocessable</td>
+                        <td>Validation failed ΓÇö missing or invalid fields</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-500" style="font-family:'Fira Code',monospace;font-weight:700;">500</span></td>
+                        <td>Server Error</td>
+                        <td>Internal error ΓÇö contact support with your <code>tranID</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h5>Error Response Structure</h5>
+            <div class="code-block-wrap">
+                <pre>{
+  <span class="var">"status"</span>:  <span class="str">"error"</span>,
+  <span class="var">"message"</span>: <span class="str">"Missing required"</span>,
+  <span class="var">"errors"</span>: {
+    <span class="var">"number"</span>: [<span class="str">"Phone number is required."</span>]
+  }
+}</pre>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="border-top:1px solid var(--border);padding-top:2rem;margin-top:1rem;color:var(--muted);font-size:0.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+            <span>┬⌐ 2026 PesaLink ΓÇö All rights reserved</span>
+            <span>API v1.0 ┬╖ Built with Γ¥ñ∩╕Å for developers</span>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    function switchTab(btn, group, tab) {
+        // Deactivate all tabs and panels in this group
+        const tabList = btn.closest('.code-tab-list');
+        tabList.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        // Hide all panels
+        const allPanels = tabList.closest('.code-tabs').querySelectorAll('.code-panel');
+        allPanels.forEach(p => p.classList.remove('active'));
+        // Show selected panel
+        const panel = document.getElementById(group + '-' + tab);
+        if (panel) panel.classList.add('active');
+    }
+
+    function copyCode(btn) {
+        const pre = btn.nextElementSibling;
+        const text = pre.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Γ£ô Copied';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+
+    // Active sidebar link on scroll
+    const sections = document.querySelectorAll('[id]');
+    const links = document.querySelectorAll('.sidebar-link');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                links.forEach(l => l.classList.remove('active'));
+                const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+                if (active) active.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

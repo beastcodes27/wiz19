@@ -1,0 +1,21 @@
+Options -Indexes
+RewriteEngine On
+ErrorDocument 404 /404.php
+
+# 1. Redirect direct requests for *.php to clean URLs
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{THE_REQUEST} \s/+(.+)\.php[\s?] [NC]
+RewriteRule ^ %{REQUEST_SCHEME}://%{HTTP_HOST}/%1 [R=301,L]
+
+# 2. Map clean URLs to .php files internally
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*?)/?$ $1.php [L]
+
+# ─── Subdomain-as-path Router ─────────────────────────────────────────────────
+# Routes /PREFIX or /PREFIX/ → landing.php?subdomain=PREFIX
+# Only fires when the path is NOT an existing file or directory,
+# and is a single alphanumeric slug (the domain suffix).
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z0-9][a-z0-9\-]+)/?$ landing.php?subdomain=$1 [L,QSA,NC]

@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTAMU+ | Prime Streaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WFSQPTZZLJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WFSQPTZZLJ');
+</script>
+    <style>
+        :root {
+            --primary: #00A8E1;
+            /* Prime Blue */
+            --bg: #0f171e;
+            --card-bg: #1b2530;
+            --text-main: #ffffff;
+            --text-dim: #8197a4;
+            --nav-bg: #1a242f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* --- Prime Solid Navbar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 0 4%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--nav-bg);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* --- Prime Wide Hero --- */
+        .hero {
+            height: 75vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 4%;
+            background: linear-gradient(to right, var(--bg) 0%, rgba(15, 23, 30, 0.4) 50%, transparent 100%),
+                linear-gradient(to top, var(--bg) 0%, transparent 20%),
+                url('assets/landing4.jpg') center/cover;
+        }
+
+        .hero-content {
+            max-width: 500px;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.1;
+        }
+
+        .hero-desc {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 14px 40px;
+            border-radius: 4px;
+            /* Sharper corners */
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-play {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-play:hover {
+            background: #008fbe;
+        }
+
+        /* --- Grid System (16:9 Aspect) --- */
+        .section-container {
+            padding: 40px 4%;
+        }
+
+        .row-header {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .row-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .movie-card {
+            background: transparent;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .card-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #252e39;
+        }
+
+        .card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .movie-card:hover .card-thumb {
+            outline: 3px solid #fff;
+            outline-offset: -3px;
+        }
+
+        .badge-premium {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 168, 225, 0.9);
+            color: white;
+            padding: 4px 8px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 2px;
+        }
+
+        .card-info {
+            padding: 10px 0;
+        }
+
+        .card-info h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .card-info p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* --- Prime Style Modal --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--bg);
+            width: 100%;
+            max-width: 480px;
+            border: 1px solid #303c4a;
+            padding: 40px;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .payment-method {
+            border: 1px solid #303c4a;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: rgba(0, 168, 225, 0.05);
+        }
+
+        .input-group input {
+            width: 100%;
+            background: #fff;
+            border: 1px solid #8197a4;
+            padding: 14px;
+            color: #000;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .btn-full {
+            width: 100%;
+            margin-top: 20px;
+            background: var(--primary);
+            color: white;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .movie-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .hero {
+                height: 50vh;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo">UTAMU<span>+</span></a>
+        <div class="nav-right">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Bongo Videos</h1>
+            <p class="hero-desc">Connections zote mpya hapa angalia</p>
+
+        </div>
+    </header>
+
+    <main class="section-container">
+        <div class="row-header">
+            <h2 class="row-title">Included with UTAMU+</h2>
+        </div>
+
+        <div class="movie-grid">
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1019&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/d3581773-3f67-48db-bdc2-e2d40ba40e60/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>MKAMIO KAMA HATOIONA TENA</h3>
+                        <p>1.8M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1020&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/133ba5a8-9bdf-457e-b38c-991e29cdecd8/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>IZUNGUSHE BABE</h3>
+                        <p>216.8K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1021&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/129edf6c-2626-4e6d-9201-b42d0f3663cc/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>MISHANGAZI KAENI PEMBENI MTOTO WA 2009 NICHEZEE MOTO</h3>
+                        <p>568K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1022&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/21d77608-1c9f-4692-bc1f-b02ccce41856/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>NATAKA IWE YANGU PEKEANGU</h3>
+                        <p>434.7K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1023&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/96745708-b60b-41a6-a6f6-efb8b2121b53/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>ALAMBAH HAAM</h3>
+                        <p>4.5M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1024&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/f0b3ca7b-b582-484d-9ec0-070a71f692fe/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>MJUZI WA MAMBO</h3>
+                        <p>991.8K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1033&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/9e12894d-9a9c-4819-8bee-b86201799fe5/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>MFANYAKAZI BANK CRDB NA BODA</h3>
+                        <p>365.9K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1034&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/e0b42ebc-7595-4def-b67a-231a5964a136/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>HII KONEKSHENI FUNGA KAZI</h3>
+                        <p>877K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1621&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/2f569bb8-822d-4ecd-9424-3b8731d330d9/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>USINIINGIZIE HIVYO NAUMIA</h3>
+                        <p>2.4M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;2134&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/e2517688-23f4-4c82-b72b-dd3d70d0dc1e/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>CHOMEKA YOOTE IINGIE MPAKA TUMBONI</h3>
+                        <p>4.9M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;2135&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/eb9a13b6-9953-42b7-87c9-1a359cf834ee/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>LEO NINA HAMU NA TANGO NATAKA UNILE MNOO</h3>
+                        <p>2.3M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;2136&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/cdd83bc0-ea5f-460f-9c82-7d382261133a/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>NAPENDA UNAVYOTOMBA WE MKAKA</h3>
+                        <p>1.7M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;2138&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/cd139ba0-e0e6-4c57-bfd9-b3ed36088db9/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>KAMPA MSELE AICHAPE KWA NYUMA ILA UTAMU UKAMZIDIA</h3>
+                        <p>1.4M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1015&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/bf033440-cdfb-4f08-b3e4-f28b5870faa5/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>JAMANI TARATIBU BASI WE KAKA</h3>
+                        <p>765.7K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1016&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/916be264-03ab-46c0-9dec-af877bdac3bf/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>KIUNO NYIGU VITU VYA MAANA</h3>
+                        <p>234.6K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1017&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/b7e9998d-3f02-455d-9005-b888473d710d/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>MKAMIO KAMA HATOIONA TENA</h3>
+                        <p>987.7K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1025&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/8f0efb2e-bc4f-4e48-82e6-03e44815f95e/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>KITOTO CHA 2000 KINAVYONYWA</h3>
+                        <p>346.9K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1018&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/e051a7ee-e84d-42c9-83db-6e659bdb5149/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>Malaya Wa Kutomba Kama wote</h3>
+                        <p>456.6K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1026&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/35df91c4-cda5-47c3-a731-3978883fd716/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>BARMAID KITAMBAA CHEUPE KABANANISHWA</h3>
+                        <p>897.7K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1027&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/cfb7d568-c493-4ec9-971f-91636c778021/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>Connection ya mwaka 🔥🔥🔥</h3>
+                        <p>757K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1028&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/91ae17d4-1402-4c5e-b219-6e9e054315c1/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>KAPELEKEWA MOTO MWINGI MPAKA KAZIMA</h3>
+                        <p>876.7K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1029&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/654f5911-e615-4f7d-91aa-2f0eabf6eeec/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>Connection mpya ya ZUchu</h3>
+                        <p>1.8M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1031&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/847b599a-eac4-44eb-9741-2a7423d2ae78/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>KAJISAHAU SIJUI IMEINGIA WAPI</h3>
+                        <p>4.7M views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1030&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/0ba641ce-f738-4521-a0c9-f7985e0c63c5/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>MTOTO ANAKUNWA VIZURI INAPOINGIA</h3>
+                        <p>569.2K views • Premium Video</p>
+                    </div>
+                </div>
+                            
+                <div class="movie-card"
+                    onclick="openPaymentModal(event, &#039;1000&#039;, &#039;1032&#039;)">
+
+                    <div class="card-thumb">
+                        <img src="https://cdn1.tanzaniahub.click/videos/99d190d0-8b47-4345-894e-891bbd825f17/preview.jpg" alt="Thumbnail">
+                                                    <div class="badge-premium"><i class="fas fa-shopping-cart"></i> RENT TSH 1000
+                            </div>
+                                            </div>
+
+                    <div class="card-info">
+                        <h3>NIENDELEE KUKUWEKA HIVI HVI</h3>
+                        <p>143.7K views • Premium Video</p>
+                    </div>
+                </div>
+                    </div>
+    </main>
+
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content">
+            <i class="fas fa-times"
+                style="position: absolute; top: 20px; right: 20px; cursor: pointer; color: var(--text-dim);"
+                onclick="closePaymentModal()"></i>
+
+            <div class="modal-header">
+                <h2>Rent this video</h2>
+                <p style="color: var(--text-dim);">Ready to watch? Rent this video instantly with Mobile Money.</p>
+            </div>
+
+            <input type="hidden" id="videoID" value="">
+
+            <div class="payment-method active">
+                <i class="fas fa-mobile-alt" style="font-size: 1.5rem; color: var(--primary);"></i>
+                <div>
+                    <strong id="modalPrice">TSH 0</strong>
+                    <p style="font-size: 0.8rem; color: var(--text-dim)">Mobile Money (M-Pesa, Tigo, Airtel)</p>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label style="font-size: 0.9rem; font-weight: 700;">Enter phone number</label>
+                <input type="tel" placeholder="07XXXXXXXX" id="phoneNumber">
+            </div>
+
+            <button class="btn btn-full" onclick="processPayment()">
+                Complete Rental
+            </button>
+
+            <p style="font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-top: 20px;">
+                Payments are secure and encrypted.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Keep your existing logic, ensure the IDs match
+        let paymentCheckInterval;
+
+        function openPaymentModal(event, price, id) {
+            if (event) event.preventDefault();
+            document.getElementById('modalPrice').innerText = 'TSH ' + price;
+            document.getElementById('videoID').value = id;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            resetPaymentForm();
+            resetPayButton();
+        }
+
+        async function processPayment() {
+            const phone = document.getElementById('phoneNumber').value;
+            const videoID = document.getElementById('videoID').value;
+            const amount = document.getElementById('modalPrice').innerText.replace('TSH ', '');
+            const payBtn = document.querySelector('.btn-full');
+
+            payBtn.innerHTML = 'Processing...';
+            payBtn.disabled = true;
+
+            try {
+                const response = await fetch('/payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': 'biwo1mP4nEAo2F2UySayK5j2jbjhOvRPewHSOzlw',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({video_id: videoID, phone: phone})
+
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    payBtn.innerHTML = 'Awaiting PIN...';
+                    checkStatus(data.transaction_id, data.redirect_url);
+                } else {
+                    alert('Error: ' + data.message);
+                    resetPayButton(payBtn);
+                }
+            } catch (error) {
+                alert('Connection Error');
+                resetPayButton(payBtn);
+            }
+        }
+
+        function checkStatus(transactionId, redirectUrl) {
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/payments/status/${transactionId}`);
+                    const statusData = await response.json();
+                    if (statusData.status === 'completed' || statusData.status === 'success') {
+                        clearInterval(paymentCheckInterval);
+                        document.querySelector('.btn-full').innerHTML = 'SUCCESS!';
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 1000);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }, 5000);
+        }
+
+        function resetPayButton(btn) {
+            btn.innerHTML = 'Complete Rental';
+            btn.disabled = false;
+        }
+
+        function resetPaymentForm() {
+            // stop polling
+            if (paymentCheckInterval) {
+                clearInterval(paymentCheckInterval);
+                paymentCheckInterval = null;
+            }
+
+            // reset inputs
+            document.getElementById('phoneNumber').value = '';
+            document.getElementById('videoID').value = '';
+
+            // reset button
+            const btn = document.querySelector('.btn-full');
+            if (btn) {
+                btn.innerHTML = 'Complete Rental';
+                btn.disabled = false;
+                btn.style.backgroundColor = '';
+            }
+        }
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"36b877e572844fc6a714f7282eccfd4d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+
+</html>
